@@ -14,34 +14,53 @@ namespace FavoriteEpisode
             var fileName = Path.Combine(directory.FullName, "gilmoregirls.json");
             var episodes = DeserializeEpisodes(fileName);
 
-            // Ask user which episode (season # and episode #)
-            // or search name of episode
+            var episodeInParticular = episodes.Find(i => (i.Season == "5") && (i.EpisodeNumber == "2"));
+            Console.WriteLine(episodeInParticular.EpisodeName);
+
+            //Ask user which episode (season # and episode #)
+            //or search name of episode
             bool ready = false;
+            List<Episode> reviewedEpisodes = new List<Episode>();
             Console.WriteLine("Welcome to the Gilmore Girls Rating and Reviews App.");
 
             while(!ready)
             {
                 Console.WriteLine("Please enter which season you would like to review (1-7): ");
-                string entry = Console.ReadLine();
+                string seasonNumber = Console.ReadLine();
+
                 try
                 {
-                    int seasonNumber = Convert.ToInt16(entry);
-
-                    if (seasonNumber <= 7 && seasonNumber >= 1)
+                    int intSeasonNumber = Convert.ToInt16(seasonNumber);
+                    if (intSeasonNumber <= 7 && intSeasonNumber >= 1)
                     {
-                        Console.WriteLine("Good job, I'll look for it. Now what is the episode number?");
-                        string epEntry = Console.ReadLine();
-                        try
+                        Console.WriteLine("Good job, I'll look for it.");
+                        bool readyAgain = false;
+                        while (!readyAgain)
                         {
-                            int episodeNumber = Convert.ToInt16(epEntry);
-                            Console.WriteLine("Okay I am looking for Season {0} Episode {1}.", seasonNumber, episodeNumber);
-                            // Find the episode object
+                            Console.WriteLine("Now what is the episode number?");
+                            string episodeNumber = Console.ReadLine();
+                            try
+                            {
+                                int intEpisodeNumber = Convert.ToInt16(episodeNumber);
+                                Console.WriteLine("Okay I am looking for Season {0} Episode {1}.", seasonNumber, episodeNumber);
+                                // Find the episode object
+                                Episode foundEpisode = FindEpisode(episodes, seasonNumber, episodeNumber);
+                                Console.WriteLine("I found the episode. Name is " + foundEpisode.EpisodeName);
+                                Console.WriteLine("Summary: " + foundEpisode.Summary);
+
+                                // Review the episode
+                                Console.WriteLine("Please enter your review: ");
+                                string userReview = Console.ReadLine();
+                                foundEpisode.ReviewEpisode(userReview);
+                                reviewedEpisodes.Add(foundEpisode);
+                                ready = true;
+                                readyAgain = true;
+                            }
+                            catch (FormatException)
+                            {
+                                Console.WriteLine("You didn't enter a number!");
+                            }
                         }
-                        catch (FormatException)
-                        {
-                            Console.WriteLine(epEntry + " is not a number!");
-                        }
-                        ready = true;
                     }
                     else
                     {
@@ -50,13 +69,13 @@ namespace FavoriteEpisode
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine(entry + " is not a number!");
+                    Console.WriteLine("You didn't enter a number!");
                 }
             }
 
-            // Ask user to leave a review (string) or rating (int)
-
-            // Serialize to file after each change (or save all and do when they exit?)
+            // Serialize all reviewed episodes to a new json file (how do I combine this with the original file and overwrite it?)
+            fileName = Path.Combine(directory.FullName, "reviewEpisodes.json");
+            SerializeEpisodesToFile(reviewedEpisodes, fileName);
 
             //foreach (var episode in episodes)
             //{
@@ -84,6 +103,11 @@ namespace FavoriteEpisode
             {
                 serializer.Serialize(jsonWriter, episodes);
             }
+        }
+
+        public static Episode FindEpisode(List<Episode> episodes, string seasonNumber, string episodeNumber)
+        {
+            return episodes.Find(i => (i.Season == seasonNumber) && (i.EpisodeNumber == episodeNumber));
         }
     }
 }

@@ -26,5 +26,15 @@ namespace FavoriteEpisode
         public string Summary { get; set; }
         public int Rating { get; set; }
         public string Review { get; set; }
+
+        public void RateEpisode(int rating)
+        {
+            Rating = rating;
+        }
+
+        public void ReviewEpisode(string review)
+        {
+            Review = review;
+        }
     }
 }
