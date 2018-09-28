@@ -7,7 +7,7 @@ namespace FavoriteEpisode
 {
     public class RootObject
     {
-        public Episode[] Episode { get; set;  }
+        public Episode[] Episode { get; set; }
     }
 
     public class Episode
@@ -24,5 +24,7 @@ namespace FavoriteEpisode
         public string AirTime { get; set; }
         [JsonProperty(PropertyName = "summary")]
         public string Summary { get; set; }
+        public int Rating { get; set; }
+        public string Review { get; set; }
     }
 }
