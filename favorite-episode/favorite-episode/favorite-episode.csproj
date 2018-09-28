@@ -37,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="gilmoregirls.json" />
-    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
