@@ -52,7 +52,8 @@ namespace FavoriteEpisode
                                 Console.WriteLine("Please enter your review: ");
                                 string userReview = Console.ReadLine();
                                 foundEpisode.ReviewEpisode(userReview);
-                                reviewedEpisodes.Add(foundEpisode);
+
+                                //reviewedEpisodes.Add(foundEpisode);
                                 ready = true;
                                 readyAgain = true;
                             }
@@ -73,14 +74,9 @@ namespace FavoriteEpisode
                 }
             }
 
-            // Serialize all reviewed episodes to a new json file (how do I combine this with the original file and overwrite it?)
-            fileName = Path.Combine(directory.FullName, "reviewEpisodes.json");
-            SerializeEpisodesToFile(reviewedEpisodes, fileName);
-
-            //foreach (var episode in episodes)
-            //{
-            //    Console.WriteLine("Season " + episode.Season + " Episode " + episode.EpisodeNumber + ": Episode name: " + episode.EpisodeName);
-            //}
+            // Serialize all reviewed episodes to a new json file (should I overwrite the original json file so you can see reviews you did before?)
+            fileName = Path.Combine(directory.FullName, "reviewedEpisodes.json");
+            SerializeEpisodesToFile(episodes, fileName);
         }
 
         public static List<Episode> DeserializeEpisodes(string fileName)
