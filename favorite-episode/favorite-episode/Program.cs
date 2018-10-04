@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace FavoriteEpisode
@@ -9,17 +10,19 @@ namespace FavoriteEpisode
     {
         public static void Main(string[] args)
         {
+            // Get current directly and create file name for data set: gilmoregirls.json
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             var fileName = Path.Combine(directory.FullName, "gilmoregirls.json");
+
+            // Deserialize data in gilmoregirls.json
             var episodes = DeserializeEpisodes(fileName);
 
-            var episodeInParticular = episodes.Find(i => (i.Season == "5") && (i.EpisodeNumber == "2"));
-            Console.WriteLine(episodeInParticular.EpisodeName);
-
-            //Ask user which episode (season # and episode #)
+            //Ask user which episode (season # and episode #) for review
             //or search name of episode
             bool ready = false;
+
+            // Keep track of episodes that have been reviewed with a new list
             List<Episode> reviewedEpisodes = new List<Episode>();
             Console.WriteLine("Welcome to the Gilmore Girls Rating and Reviews App.");
 
@@ -104,6 +107,12 @@ namespace FavoriteEpisode
         public static Episode FindEpisode(List<Episode> episodes, string seasonNumber, string episodeNumber)
         {
             return episodes.Find(i => (i.Season == seasonNumber) && (i.EpisodeNumber == episodeNumber));
+        }
+
+        public static bool VerifySeasonNumber(List<Episode> episodes, string number)
+        {
+            List<string> seasonNumbers = episodes.Select(e => e.Season).Distinct().ToList();
+            return seasonNumbers.Contains(number);
         }
     }
 }
