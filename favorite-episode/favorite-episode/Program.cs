@@ -18,6 +18,18 @@ namespace FavoriteEpisode
             // Deserialize data in gilmoregirls.json
             var episodes = DeserializeEpisodes(fileName);
 
+            // Create a list of season numbers (use for verification of user input)
+            var seasonNumbers = GetSeasonNumbers(episodes);
+
+            // Create a dictionary of season number: list of episode numbers (use for verification of user input)
+            Dictionary<string, List<string>> seasonAndEpisodeNumbersDictionary = new Dictionary<string, List<string>>();
+
+            // Populate the dictionary with season number: list of episode numbers in that season
+            foreach(string season in seasonNumbers)
+            {
+                seasonAndEpisodeNumbersDictionary.Add(season, GetEpisodeNumbers(episodes, season));
+            }
+
             //Ask user which episode (season # and episode #) for review
             //or search name of episode
             bool ready = false;
@@ -31,49 +43,39 @@ namespace FavoriteEpisode
                 Console.WriteLine("Please enter which season you would like to review (1-7): ");
                 string seasonNumber = Console.ReadLine();
 
-                try
+                if(seasonAndEpisodeNumbersDictionary.ContainsKey(seasonNumber))
                 {
-                    int intSeasonNumber = Convert.ToInt16(seasonNumber);
-                    if (intSeasonNumber <= 7 && intSeasonNumber >= 1)
+                    Console.WriteLine("Good job, I'll look for it.");
+                    bool readyAgain = false;
+                    while (!readyAgain)
                     {
-                        Console.WriteLine("Good job, I'll look for it.");
-                        bool readyAgain = false;
-                        while (!readyAgain)
+                        Console.WriteLine("Now what is the episode number?");
+                        string episodeNumber = Console.ReadLine();
+                        if(seasonAndEpisodeNumbersDictionary[seasonNumber].Contains(episodeNumber))
                         {
-                            Console.WriteLine("Now what is the episode number?");
-                            string episodeNumber = Console.ReadLine();
-                            try
-                            {
-                                int intEpisodeNumber = Convert.ToInt16(episodeNumber);
-                                Console.WriteLine("Okay I am looking for Season {0} Episode {1}.", seasonNumber, episodeNumber);
-                                // Find the episode object
-                                Episode foundEpisode = FindEpisode(episodes, seasonNumber, episodeNumber);
-                                Console.WriteLine("I found the episode. Name is " + foundEpisode.EpisodeName);
-                                Console.WriteLine("Summary: " + foundEpisode.Summary);
+                            // Find the episode object
+                            Episode foundEpisode = FindEpisode(episodes, seasonNumber, episodeNumber);
+                            Console.WriteLine("I found the episode. Name is " + foundEpisode.EpisodeName);
+                            Console.WriteLine("Summary: " + foundEpisode.Summary);
 
-                                // Review the episode
-                                Console.WriteLine("Please enter your review: ");
-                                string userReview = Console.ReadLine();
-                                foundEpisode.ReviewEpisode(userReview);
+                            // Review the episode
+                            Console.WriteLine("Please enter your review: ");
+                            string userReview = Console.ReadLine();
+                            foundEpisode.ReviewEpisode(userReview);
 
-                                //reviewedEpisodes.Add(foundEpisode);
-                                ready = true;
-                                readyAgain = true;
-                            }
-                            catch (FormatException)
-                            {
-                                Console.WriteLine("You didn't enter a number!");
-                            }
+                            //reviewedEpisodes.Add(foundEpisode);
+                            ready = true;
+                            readyAgain = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Episode number not found. Try again.");
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("There are only seasons 1 to 7 of Gilmore Girls. Try again.");
-                    }
                 }
-                catch (FormatException)
+                else
                 {
-                    Console.WriteLine("You didn't enter a number!");
+                    Console.WriteLine("Season number not found. Try again.");
                 }
             }
 
@@ -109,10 +111,16 @@ namespace FavoriteEpisode
             return episodes.Find(i => (i.Season == seasonNumber) && (i.EpisodeNumber == episodeNumber));
         }
 
-        public static bool VerifySeasonNumber(List<Episode> episodes, string number)
+        public static List<String> GetSeasonNumbers(List<Episode> episodes)
         {
             List<string> seasonNumbers = episodes.Select(e => e.Season).Distinct().ToList();
-            return seasonNumbers.Contains(number);
+            return seasonNumbers;
+        }
+
+        public static List<string> GetEpisodeNumbers(List<Episode> episodes, string seasonNumber)
+        {
+            List<string> episodeNumbers = episodes.Where(episode => episode.Season == seasonNumber).Select(n => n.EpisodeNumber).Distinct().ToList();
+            return episodeNumbers;
         }
     }
 }
