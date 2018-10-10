@@ -110,7 +110,7 @@ namespace FavoriteEpisode
                 }
             }
 
-            // Serialize all reviewed episodes to a new json file (should I overwrite the original json file so you can see reviews you did before?)
+            // Serialize all reviewed episodes to a new json file (it's currently overwritting the original json file with the new object data)
             fileName = Path.Combine(directory.FullName, "gilmoregirls.json");
             SerializeEpisodesToFile(episodes, fileName);
         }
