@@ -58,14 +58,20 @@ namespace FavoriteEpisode
                             Console.WriteLine("I found the episode. Name is " + foundEpisode.EpisodeName);
                             Console.WriteLine("Summary: " + foundEpisode.Summary);
 
+                            // Display current reviews
+                            foreach(string review in foundEpisode.Reviews)
+                            {
+                                Console.WriteLine(review);
+                            }
+
                             // Review the episode
                             Console.WriteLine("Please enter your review: ");
+                            Console.WriteLine();
                             string userReview = Console.ReadLine();
                             foundEpisode.ReviewEpisode(userReview);
-
-                            //reviewedEpisodes.Add(foundEpisode);
                             ready = true;
                             readyAgain = true;
+                            break;
                         }
                         else
                         {
@@ -80,7 +86,7 @@ namespace FavoriteEpisode
             }
 
             // Serialize all reviewed episodes to a new json file (should I overwrite the original json file so you can see reviews you did before?)
-            fileName = Path.Combine(directory.FullName, "reviewedEpisodes.json");
+            fileName = Path.Combine(directory.FullName, "gilmoregirls.json");
             SerializeEpisodesToFile(episodes, fileName);
         }
 

@@ -24,17 +24,17 @@ namespace FavoriteEpisode
         public string AirTime { get; set; }
         [JsonProperty(PropertyName = "summary")]
         public string Summary { get; set; }
-        public int Rating { get; set; }
-        public string Review { get; set; }
+        //public int Rating { get; set; }
+        public List<string> Reviews = new List<string>();
 
-        public void RateEpisode(int rating)
-        {
-            Rating = rating;
-        }
+        //public void RateEpisode(int rating)
+        //{
+        //    Rating = rating;
+        //}
 
         public void ReviewEpisode(string review)
         {
-            Review = review;
+            Reviews.Add(review);
         }
     }
 }
