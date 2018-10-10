@@ -55,13 +55,23 @@ namespace FavoriteEpisode
                         {
                             // Find the episode object
                             Episode foundEpisode = FindEpisode(episodes, seasonNumber, episodeNumber);
-                            Console.WriteLine("I found the episode. Name is " + foundEpisode.EpisodeName);
+                            Console.WriteLine("I found the episode.");
+                            Console.WriteLine();
+                            Console.WriteLine("Episode Name: " + foundEpisode.EpisodeName);
                             Console.WriteLine("Summary: " + foundEpisode.Summary);
+                            Console.WriteLine();
 
                             // Display current reviews
-                            foreach(string review in foundEpisode.Reviews)
+                            if (foundEpisode.Reviews.Count > 0)
                             {
-                                Console.WriteLine(review);
+                                Console.WriteLine("Current reviews are...");
+                                Console.WriteLine();
+                                for (int i = 0; i < foundEpisode.Reviews.Count; i++)
+                                {
+                                    Console.WriteLine("Review #{0}: ", i + 1);
+                                    Console.WriteLine(foundEpisode.Reviews[i]);
+                                }
+                                Console.WriteLine();
                             }
 
                             // Review the episode
@@ -69,9 +79,24 @@ namespace FavoriteEpisode
                             Console.WriteLine();
                             string userReview = Console.ReadLine();
                             foundEpisode.ReviewEpisode(userReview);
-                            ready = true;
-                            readyAgain = true;
-                            break;
+
+                            // Ask user if they want to quit or review more episodes
+                            Console.WriteLine();
+                            Console.WriteLine("Type 'quit or q' to quit.");
+                            Console.WriteLine("Type 'more or m' to review more episodes.");
+                            string userAction = Console.ReadLine();
+
+                            if(userAction.ToLower() == "quit" || userAction.ToLower() == "q")
+                            {
+                                ready = true;
+                                readyAgain = true;
+                                break;
+                            }
+                            else if(userAction.ToLower() == "more" || userAction.ToLower() == "m")
+                            {
+                                break;
+                            }
+
                         }
                         else
                         {
