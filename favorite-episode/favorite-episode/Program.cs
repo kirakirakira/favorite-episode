@@ -36,6 +36,20 @@ namespace FavoriteEpisode
 
             // Keep track of episodes that have been reviewed with a new list
             List<Episode> reviewedEpisodes = new List<Episode>();
+
+            Console.Title = "ASCII Art";
+            string title = @"
+
+   ___ _ _                      ___ _     _    
+  / __(_| |_ __  ___ _ _ ___   / __(_)_ _| |___
+ | (_ | | | '  \/ _ | '_/ -_) | (_ | | '_| (_-<
+  \___|_|_|_|_|_\___|_| \___|  \___|_|_| |_/__/
+                                               
+
+            ";
+
+            Console.WriteLine(title);
+
             Console.WriteLine("Welcome to the Gilmore Girls Rating and Reviews App.");
 
             while(!ready)
@@ -78,7 +92,11 @@ namespace FavoriteEpisode
                             Console.WriteLine("Please enter your review: ");
                             Console.WriteLine();
                             string userReview = Console.ReadLine();
-                            foundEpisode.ReviewEpisode(userReview);
+
+                            if(userReview != "")
+                            {
+                                foundEpisode.ReviewEpisode(userReview);
+                            }
 
                             // Ask user if they want to quit or review more episodes
                             Console.WriteLine();
