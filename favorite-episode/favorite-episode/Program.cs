@@ -34,9 +34,6 @@ namespace FavoriteEpisode
             //or search name of episode
             bool ready = false;
 
-            // Keep track of episodes that have been reviewed with a new list
-            List<Episode> reviewedEpisodes = new List<Episode>();
-
             Console.Title = "ASCII Art";
             string title = @"
 
