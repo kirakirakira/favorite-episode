@@ -14,7 +14,6 @@ namespace FavoriteEpisode
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             var fileName = Path.Combine(directory.FullName, "gilmoregirls.json");
-
             // Deserialize data in gilmoregirls.json
             var episodes = DeserializeEpisodes(fileName);
 
