@@ -145,6 +145,7 @@ namespace FavoriteEpisode
         public static void SerializeEpisodesToFile(List<Episode> episodes, string fileName)
         {
             var serializer = new JsonSerializer();
+            // wrapping the streamwriter in a using takes care of disposing it when it's done
             using(var writer = new StreamWriter(fileName))
             using(var jsonWriter = new JsonTextWriter(writer))
             {
