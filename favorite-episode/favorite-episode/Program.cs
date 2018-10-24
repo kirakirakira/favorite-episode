@@ -66,25 +66,10 @@ namespace FavoriteEpisode
                         {
                             // Find the episode object
                             Episode foundEpisode = FindEpisode(episodes, seasonNumber, episodeNumber);
-                            Console.WriteLine("I found the episode.");
-                            Console.WriteLine();
-                            Console.WriteLine("Episode Name: " + foundEpisode.EpisodeName);
-                            Console.WriteLine("Summary: " + foundEpisode.Summary);
-                            Console.WriteLine();
+                            DisplayEpisodeInfo(foundEpisode);
 
                             // Display current reviews
-                            if (foundEpisode.Reviews.Count > 0)
-                            {
-                                Console.WriteLine("Current reviews are...");
-                                Console.WriteLine();
-                                for (int i = 0; i < foundEpisode.Reviews.Count; i++)
-                                {
-                                    Console.WriteLine("Review #{0}: ", i + 1);
-                                    Console.WriteLine(foundEpisode.Reviews[i]);
-                                    Console.WriteLine();
-                                }
-                                Console.WriteLine();
-                            }
+                            DisplayCurrentReviews(foundEpisode);
 
                             // Call menu function to add/edit/delete reviews
                             DisplayCRUDMenu();
@@ -185,6 +170,15 @@ namespace FavoriteEpisode
             return episodes.Find(i => (i.Season == seasonNumber) && (i.EpisodeNumber == episodeNumber));
         }
 
+        public static void DisplayEpisodeInfo(Episode foundEpisode)
+        {
+            Console.WriteLine("I found the episode.");
+            Console.WriteLine();
+            Console.WriteLine("Episode Name: " + foundEpisode.EpisodeName);
+            Console.WriteLine("Summary: " + foundEpisode.Summary);
+            Console.WriteLine();
+        }
+
         public static List<String> GetSeasonNumbers(List<Episode> episodes)
         {
             List<string> seasonNumbers = episodes.Select(e => e.Season).Distinct().ToList();
@@ -206,6 +200,22 @@ namespace FavoriteEpisode
             Console.WriteLine("Type 3 to delete a review");
             Console.WriteLine("Type e to exit menu");
             Console.WriteLine();
+        }
+
+        public static void DisplayCurrentReviews(Episode foundEpisode)
+        {
+            if (foundEpisode.Reviews.Count > 0)
+            {
+                Console.WriteLine("Current reviews are...");
+                Console.WriteLine();
+                for (int i = 0; i < foundEpisode.Reviews.Count; i++)
+                {
+                    Console.WriteLine("Review #{0}: ", i + 1);
+                    Console.WriteLine(foundEpisode.Reviews[i]);
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+            }
         }
 
         public static void AddReview(Episode foundEpisode)
