@@ -86,14 +86,37 @@ namespace FavoriteEpisode
                                 Console.WriteLine();
                             }
 
-                            // Review the episode
-                            Console.WriteLine("Please enter your review: ");
-                            Console.WriteLine();
-                            string userReview = Console.ReadLine();
+                            // Call menu function to add/edit/delete reviews
+                            DisplayCRUDMenu();
 
-                            if(userReview != "")
+                            // Accept user input from menu choice
+                            string menuChoice = Console.ReadLine();
+
+                            switch (menuChoice)
                             {
-                                foundEpisode.ReviewEpisode(userReview);
+                                case "1":
+                                    // call add review function
+                                    Console.WriteLine("You chose add");
+                                    AddReview(foundEpisode);
+                                    break;
+                                case "2":
+                                    // call edit review function
+                                    Console.WriteLine("You chose edit");
+                                    Console.WriteLine("Which review number would you like to edit?");
+                                    string reviewNumber = Console.ReadLine();
+                                    EditReview(foundEpisode, reviewNumber);
+                                    break;
+                                case "3":
+                                    // call delete review function
+                                    Console.WriteLine("You chose delete");
+                                    break;
+                                case "e":
+                                    // exit menu
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid choice. Please try again.");
+                                    // display menu again and have them choose again
+                                    break;
                             }
 
                             // Ask user if they want to quit or review more episodes
@@ -169,6 +192,50 @@ namespace FavoriteEpisode
         {
             List<string> episodeNumbers = episodes.Where(episode => episode.Season == seasonNumber).Select(n => n.EpisodeNumber).Distinct().ToList();
             return episodeNumbers;
+        }
+
+        public static void DisplayCRUDMenu()
+        {
+            // Menu: add episode, edit review by #, delete review by #
+            Console.WriteLine("Menu:");
+            Console.WriteLine("Type 1 to add a review");
+            Console.WriteLine("Type 2 to edit a review");
+            Console.WriteLine("Type 3 to delete a review");
+            Console.WriteLine("Type e to exit menu");
+            Console.WriteLine();
+        }
+
+        public static void AddReview(Episode foundEpisode)
+        {
+            // Review the episode
+            Console.WriteLine("Please enter your review: ");
+            Console.WriteLine();
+            string userReview = Console.ReadLine();
+
+            if (userReview != "")
+            {
+                foundEpisode.ReviewEpisode(userReview);
+            }
+        }
+
+        public static void EditReview(Episode foundEpisode, string reviewNumber)
+        {
+            int reviewsCount = foundEpisode.Reviews.Count();
+            int reviewInt = Int32.Parse(reviewNumber);
+
+            // Check that review number exists
+            if(reviewInt <= reviewsCount && reviewInt >= 1)
+            {
+                Console.WriteLine("Please enter in your new review:");
+                string newReview = Console.ReadLine();
+                // Enter updated review in the list
+                foundEpisode.Reviews[reviewInt - 1] = newReview;
+            }
+            else
+            {
+                Console.WriteLine("That is not a valid review number.");
+                // should make this take you back to that same episode
+            }
         }
     }
 }
