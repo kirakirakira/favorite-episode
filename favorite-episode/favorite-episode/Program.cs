@@ -57,6 +57,7 @@ namespace FavoriteEpisode
                 if(seasonAndEpisodeNumbersDictionary.ContainsKey(seasonNumber))
                 {
                     Console.WriteLine("Good job, I'll look for it.");
+                    Console.WriteLine();
                     bool readyAgain = false;
                     while (!readyAgain)
                     {
@@ -85,19 +86,16 @@ namespace FavoriteEpisode
                                 {
                                     case "1":
                                         // call add review function
-                                        Console.WriteLine("You chose add");
                                         AddReview(foundEpisode);
                                         break;
                                     case "2":
                                         // call edit review function
-                                        Console.WriteLine("You chose edit");
                                         Console.WriteLine("Which review number would you like to edit?");
                                         string reviewEditNumber = Console.ReadLine();
                                         EditReview(foundEpisode, reviewEditNumber);
                                         break;
                                     case "3":
                                         // call delete review function
-                                        Console.WriteLine("You chose delete");
                                         Console.WriteLine("Which review number would you like to delete?");
                                         string reviewDeleteNumber = Console.ReadLine();
                                         bool isItDeleted = DeleteReview(foundEpisode, reviewDeleteNumber);
