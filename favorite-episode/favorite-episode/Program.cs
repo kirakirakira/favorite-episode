@@ -81,6 +81,7 @@ namespace FavoriteEpisode
                                 {
                                     Console.WriteLine("Review #{0}: ", i + 1);
                                     Console.WriteLine(foundEpisode.Reviews[i]);
+                                    Console.WriteLine();
                                 }
                                 Console.WriteLine();
                             }
