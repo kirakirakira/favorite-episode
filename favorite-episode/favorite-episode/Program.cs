@@ -71,41 +71,59 @@ namespace FavoriteEpisode
                             // Display current reviews
                             DisplayCurrentReviews(foundEpisode);
 
-                            // Call menu function to add/edit/delete reviews
-                            DisplayCRUDMenu();
+                            do {
+                                //
+                                bool repeatMenu = false;
 
-                            // Accept user input from menu choice
-                            string menuChoice = Console.ReadLine();
+                                // Call menu function to add/edit/delete reviews
+                                DisplayCRUDMenu();
 
-                            switch (menuChoice)
-                            {
-                                case "1":
-                                    // call add review function
-                                    Console.WriteLine("You chose add");
-                                    AddReview(foundEpisode);
+                                // Accept user input from menu choice
+                                string menuChoice = Console.ReadLine();
+
+                                switch (menuChoice)
+                                {
+                                    case "1":
+                                        // call add review function
+                                        Console.WriteLine("You chose add");
+                                        AddReview(foundEpisode);
+                                        break;
+                                    case "2":
+                                        // call edit review function
+                                        Console.WriteLine("You chose edit");
+                                        Console.WriteLine("Which review number would you like to edit?");
+                                        string reviewEditNumber = Console.ReadLine();
+                                        EditReview(foundEpisode, reviewEditNumber);
+                                        break;
+                                    case "3":
+                                        // call delete review function
+                                        Console.WriteLine("You chose delete");
+                                        Console.WriteLine("Which review number would you like to delete?");
+                                        string reviewDeleteNumber = Console.ReadLine();
+                                        bool isItDeleted = DeleteReview(foundEpisode, reviewDeleteNumber);
+
+                                        if(!isItDeleted)
+                                        {
+                                            repeatMenu = true;
+                                        }
+
+                                        break;
+                                    case "e":
+                                        // exit menu
+                                        break;
+                                    default:
+                                        Console.WriteLine("Invalid choice. Please try again.");
+                                        // display menu again and have them choose again
+                                        repeatMenu = true;
+                                        break;
+                                }
+
+                                if(!repeatMenu)
+                                {
                                     break;
-                                case "2":
-                                    // call edit review function
-                                    Console.WriteLine("You chose edit");
-                                    Console.WriteLine("Which review number would you like to edit?");
-                                    string reviewEditNumber = Console.ReadLine();
-                                    EditReview(foundEpisode, reviewEditNumber);
-                                    break;
-                                case "3":
-                                    // call delete review function
-                                    Console.WriteLine("You chose delete");
-                                    Console.WriteLine("Which review number would you like to delete?");
-                                    string reviewDeleteNumber = Console.ReadLine();
-                                    DeleteReview(foundEpisode, reviewDeleteNumber);
-                                    break;
-                                case "e":
-                                    // exit menu
-                                    break;
-                                default:
-                                    Console.WriteLine("Invalid choice. Please try again.");
-                                    // display menu again and have them choose again
-                                    break;
-                            }
+                                }
+
+                            } while (true);
 
                             // Ask user if they want to quit or review more episodes
                             Console.WriteLine();
@@ -251,8 +269,10 @@ namespace FavoriteEpisode
             }
         }
 
-        public static void DeleteReview(Episode foundEpisode, string reviewNumber)
+        public static bool DeleteReview(Episode foundEpisode, string reviewNumber)
         {
+            bool isItDeleted = false;
+
             int reviewsCount = foundEpisode.Reviews.Count();
             int reviewInt = Int32.Parse(reviewNumber);
 
@@ -265,6 +285,7 @@ namespace FavoriteEpisode
                 if(deleteInput == "y")
                 {
                     foundEpisode.Reviews.RemoveAt(reviewInt - 1);
+                    isItDeleted = true;
                 }
                 else
                 {
@@ -274,8 +295,10 @@ namespace FavoriteEpisode
             else
             {
                 Console.WriteLine("That is not a valid review number.");
-                // should make this take you back to that same episode
+                // this should take you back to the same review menu
             }
+
+            return isItDeleted;
         }
     }
 }
