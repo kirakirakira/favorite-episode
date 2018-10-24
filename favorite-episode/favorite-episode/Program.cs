@@ -103,12 +103,15 @@ namespace FavoriteEpisode
                                     // call edit review function
                                     Console.WriteLine("You chose edit");
                                     Console.WriteLine("Which review number would you like to edit?");
-                                    string reviewNumber = Console.ReadLine();
-                                    EditReview(foundEpisode, reviewNumber);
+                                    string reviewEditNumber = Console.ReadLine();
+                                    EditReview(foundEpisode, reviewEditNumber);
                                     break;
                                 case "3":
                                     // call delete review function
                                     Console.WriteLine("You chose delete");
+                                    Console.WriteLine("Which review number would you like to delete?");
+                                    string reviewDeleteNumber = Console.ReadLine();
+                                    DeleteReview(foundEpisode, reviewDeleteNumber);
                                     break;
                                 case "e":
                                     // exit menu
@@ -230,6 +233,33 @@ namespace FavoriteEpisode
                 string newReview = Console.ReadLine();
                 // Enter updated review in the list
                 foundEpisode.Reviews[reviewInt - 1] = newReview;
+            }
+            else
+            {
+                Console.WriteLine("That is not a valid review number.");
+                // should make this take you back to that same episode
+            }
+        }
+
+        public static void DeleteReview(Episode foundEpisode, string reviewNumber)
+        {
+            int reviewsCount = foundEpisode.Reviews.Count();
+            int reviewInt = Int32.Parse(reviewNumber);
+
+            // Check that review number exists
+            if (reviewInt <= reviewsCount && reviewInt >= 1)
+            {
+                Console.WriteLine("Are you sure you want to delete? Enter y/n: ");
+                string deleteInput = Console.ReadLine();
+
+                if(deleteInput == "y")
+                {
+                    foundEpisode.Reviews.RemoveAt(reviewInt - 1);
+                }
+                else
+                {
+                    Console.WriteLine("Nothing deleted.");
+                }
             }
             else
             {
