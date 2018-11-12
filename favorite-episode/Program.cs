@@ -3,14 +3,15 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace FavoriteEpisode
 {
     class MainClass
     {
-        public static void Main(string[] args)
+        private static void Main()
         {
-            // Get current directly and create file name for data set: gilmoregirls.json
+            // Get current directory and create file name for data set: gilmoregirls.json
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             var fileName = Path.Combine(directory.FullName, "gilmoregirls.json");
@@ -48,9 +49,13 @@ namespace FavoriteEpisode
             Console.WriteLine(title);
 
             Console.WriteLine("Welcome to the Gilmore Girls Rating and Reviews App.");
+            Console.WriteLine("----------------------------------------------------");
+            Console.WriteLine("You'll be able to review an episode after you enter the season & episode number.");
+            Console.WriteLine("If you're lucky, your review might be SHOUTED to the rooftops. Enjoy and keep watching!");
 
             while (!ready)
             {
+                Console.WriteLine("----------------------------------------------------");
                 Console.WriteLine("Please enter which season you would like to review (1-7): ");
                 string seasonNumber = Console.ReadLine();
 
@@ -68,7 +73,7 @@ namespace FavoriteEpisode
                             Episode foundEpisode = FindEpisode(episodes, seasonNumber, episodeNumber);
                             Console.WriteLine("I found the episode.");
                             Console.WriteLine();
-                            Console.WriteLine("Episode Name: " + foundEpisode.EpisodeName);
+                            Console.WriteLine(foundEpisode.Describe());
                             Console.WriteLine("Summary: " + foundEpisode.Summary);
                             Console.WriteLine();
 
@@ -77,21 +82,51 @@ namespace FavoriteEpisode
                             {
                                 Console.WriteLine("Current reviews are...");
                                 Console.WriteLine();
+
+                                // Generate random number
+                                Random rnd = new Random();
+                                int randomInt = rnd.Next(1, foundEpisode.Reviews.Count);
+
                                 for (int i = 0; i < foundEpisode.Reviews.Count; i++)
                                 {
                                     Console.WriteLine("Review #{0}: ", i + 1);
-                                    Console.WriteLine(foundEpisode.Reviews[i]);
+                                    // Randomly shout one of the reviews
+                                    if (i == randomInt)
+                                    {
+                                        if(foundEpisode.Reviews[i] != null)
+                                        {
+                                            Console.WriteLine(foundEpisode.Reviews[i].Shout());
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine(foundEpisode.Reviews[i]);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine(foundEpisode.Reviews[i]);
+                                    }
                                     Console.WriteLine();
                                 }
                                 Console.WriteLine();
                             }
 
-                            // Review the episode
-                            Console.WriteLine("Please enter your review: ");
+                            // Get user information for review
+                            Console.WriteLine("Please write your name: ");
                             Console.WriteLine();
-                            string userReview = Console.ReadLine();
+                            string reviewerName = Console.ReadLine();
 
-                            if (userReview != "")
+                            Console.WriteLine("Please write your review: ");
+                            Console.WriteLine();
+                            string review = Console.ReadLine();
+
+                            // Create review object
+                            Review userReview = new Review();
+                            userReview.Reviewer = reviewerName;
+                            userReview.ReviewText = review;
+                            userReview.DateTime = DateTime.Now;
+
+                            if (userReview != null)
                             {
                                 foundEpisode.ReviewEpisode(userReview);
                                 // Serialize episodes to json file - do it here so you don't have to properly exit for the reviews to save
@@ -115,7 +150,6 @@ namespace FavoriteEpisode
                             {
                                 break;
                             }
-
                         }
                         else
                         {
