@@ -93,14 +93,7 @@ namespace FavoriteEpisode
                                     // Randomly shout one of the reviews
                                     if (i == randomInt)
                                     {
-                                        if(foundEpisode.Reviews[i] != null)
-                                        {
-                                            Console.WriteLine(foundEpisode.Reviews[i].Shout());
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine(foundEpisode.Reviews[i]);
-                                        }
+                                        Console.WriteLine(foundEpisode.Reviews[i].Shout());
                                     }
                                     else
                                     {
@@ -126,7 +119,8 @@ namespace FavoriteEpisode
                             userReview.ReviewText = review;
                             userReview.DateTime = DateTime.Now;
 
-                            if (userReview != null)
+                            // Only add the review if it has a reviewer and review text
+                            if (!string.IsNullOrEmpty(userReview.Reviewer) || !string.IsNullOrEmpty(userReview.Reviewer))
                             {
                                 foundEpisode.ReviewEpisode(userReview);
                                 // Serialize episodes to json file - do it here so you don't have to properly exit for the reviews to save
