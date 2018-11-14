@@ -49,6 +49,7 @@ namespace FavoriteEpisode
             Console.WriteLine(title);
 
             Console.WriteLine("Welcome to the Gilmore Girls Rating and Reviews App.");
+            Console.WriteLine("****'Coffee please, and a shot of cynicism!' -- Lorelai Gilmore****");
             Console.WriteLine("----------------------------------------------------");
             Console.WriteLine("You'll be able to review an episode after you enter the season & episode number.");
             Console.WriteLine("If you're lucky, your review might be SHOUTED to the rooftops. Enjoy and keep watching!");
@@ -141,6 +142,11 @@ namespace FavoriteEpisode
                                 break;
                             }
                             else if (userAction.ToLower() == "more" || userAction.ToLower() == "m")
+                            {
+                                break;
+                            }
+                            // breaks even if you don't enter m or more...
+                            else
                             {
                                 break;
                             }
