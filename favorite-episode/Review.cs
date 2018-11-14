@@ -20,6 +20,7 @@ namespace FavoriteEpisode
         }
 
         // Shout a review by writing it in all caps
+        // Implementation of IOpinion interface
         public string Shout()
         {
             if (Reviewer == null || ReviewText == null)
