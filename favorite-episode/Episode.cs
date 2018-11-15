@@ -34,28 +34,6 @@ namespace FavoriteEpisode
             Reviews.Add(review);
         }
 
-        public Dictionary<string, int> NumberReviewsByReviewer()
-        {
-            Dictionary<string, int> numberReviewsByReviewer = new Dictionary<string, int>();
-
-            foreach(Review review in Reviews)
-            {
-                if (review.Reviewer != null)
-                {
-                    if (numberReviewsByReviewer.ContainsKey(review.Reviewer))
-                    {
-                        numberReviewsByReviewer[review.Reviewer] += 1;
-                    }
-                    else
-                    {
-                        numberReviewsByReviewer[review.Reviewer] = 1;
-                    }
-                }
-            }
-
-            return numberReviewsByReviewer;
-        }
-
         // Abstraction & Polymorphism
         public override string Describe()
         {
