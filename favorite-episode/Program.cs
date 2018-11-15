@@ -164,6 +164,7 @@ namespace FavoriteEpisode
             }
         }
 
+        // Deserialize episodes from the json file and into instances of the Episode class
         public static List<Episode> DeserializeEpisodes(string fileName)
         {
             var episodes = new List<Episode>();
@@ -176,6 +177,7 @@ namespace FavoriteEpisode
             return episodes;
         }
 
+        // Serialize data back into json for persistence
         public static void SerializeEpisodesToFile(List<Episode> episodes, string fileName)
         {
             var serializer = new JsonSerializer();
@@ -187,17 +189,20 @@ namespace FavoriteEpisode
             }
         }
 
+        // Find the episode by season number and episode number using linq
         public static Episode FindEpisode(List<Episode> episodes, string seasonNumber, string episodeNumber)
         {
             return episodes.Find(i => (i.Season == seasonNumber) && (i.EpisodeNumber == episodeNumber));
         }
 
+        // Get season numbers using linq in order to check the user's query
         public static List<String> GetSeasonNumbers(List<Episode> episodes)
         {
             List<string> seasonNumbers = episodes.Select(e => e.Season).Distinct().ToList();
             return seasonNumbers;
         }
 
+        // Get episode numbers using linq in order to check the user's query
         public static List<string> GetEpisodeNumbers(List<Episode> episodes, string seasonNumber)
         {
             List<string> episodeNumbers = episodes.Where(episode => episode.Season == seasonNumber).Select(n => n.EpisodeNumber).Distinct().ToList();
